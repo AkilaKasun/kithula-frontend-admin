@@ -1,16 +1,73 @@
-# React + Vite
+# 🌿 Kithula - Admin Management Portal
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Welcome to the **Kithula Admin Management Portal**. This web application provides a secure, modern, and responsive dashboard designed for managing organic Kithul product catalogs, tracking customer orders, updating delivery statuses, and reviewing real-time sales metrics.
 
-Currently, two official plugins are available:
+Built with **React**, **Vite**, **Tailwind CSS**, and integrated with a **FastAPI (PostgreSQL + AWS S3)** backend architecture.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## ✨ Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **🔒 Secure Authentication:**
+  - Token-based login with support for both Email or Username.
+  - JWT storage managed securely via `js-cookie` and `localStorage`.
+  - Route guard protection (`AdminProtectedRoute`) ensuring secure access to administrative controls.
 
-## Expanding the ESLint configuration
+- **📊 Comprehensive Executive Dashboard:**
+  - Dynamic KPI Summary Cards: *Total Orders*, *Pending*, *Processing*, and *Delivered*.
+  - Monthly Order Analytics Bar Chart (Total vs. Delivered Orders).
+  - Categorized Product Breakdown.
+  - Lifetime Verified Delivered Revenue Metrics.
+  - Recent Order Preview table with quick navigation shortcuts.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- **📦 Product Catalog Management:**
+  - View all active products in a clean data table.
+  - Add new products with image uploads directly sent to AWS S3.
+  - Edit existing product details (name, description, price, stock, active status, image replacement).
+  - Permanent product deletion with S3 image cleanup and reusable modal dialogs.
+
+- **🛒 Order Processing & Fulfillment:**
+  - View full list of customer orders with status filters (*ALL*, *Pending*, *Processing*, *Shipped*, *Delivered*, *Cancelled*).
+  - Quick inline status modification dropdowns.
+  - Itemized Order Details Modal showing customer contacts, delivery destination, special notes, and item breakdown.
+  - Order record deletion for finalized or cancelled orders.
+
+---
+
+## 🛠️ Tech Stack
+
+- **Frontend Framework:** React 18+
+- **Build Tool / Bundler:** Vite
+- **Styling:** Tailwind CSS + Custom CSS Theme Variables
+- **Icons:** `react-icons` (FontAwesome / Feather)
+- **HTTP Client:** Axios (with Interceptors for JWT authorization)
+- **Notifications:** `react-toastify`
+- **Routing:** React Router v6
+
+---
+
+## 📁 Project Structure
+
+```text
+src/
+├── assets/                  # Brand images & logos
+├── components/
+│   └── admin/               # Reusable Admin Components
+│       ├── AdminLayout.jsx          # Main layout wrapper with sidebar & navbar
+│       ├── AdminNavbar.jsx          # Top navigation bar with active avatar & logout
+│       ├── AdminProtectedRoute.jsx  # Route guard checking authentication state
+│       ├── AdminSidebar.jsx         # Sticky navigation sidebar
+│       └── DeleteConfirmModal.jsx   # Reusable confirmation popup modal
+├── helpers/             # Authentication & API Utilities
+│   ├── ApiClient.js         # Axios instance with auto-injected Bearer tokens
+│   ├── auth.controller.js   # Sign-in & Sign-out handler logic
+│   └── helpers/             # Cookie & LocalStorage persistence helpers
+├── pages/
+│   └── admin/               # Primary Admin Pages
+│       ├── AdminDashboard.jsx       # Analytics & KPI overview
+│       ├── AdminLogin.jsx           # Login credentials UI
+│       ├── AdminOrders.jsx          # Order fulfillment & status manager
+│       └── AdminProducts.jsx        # Product catalog CRUD management
+└── controllers/                # Backend API Endpoints
+    ├── order.controllers.js     # Order API calls
+    └── product.controllers.js   # Product API calls
