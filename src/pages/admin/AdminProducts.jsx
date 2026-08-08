@@ -417,6 +417,7 @@ export default function AdminProducts() {
                   required
                   placeholder="1500.00"
                   value={addFormData.price}
+                  min={0}
                   onChange={(e) => setAddFormData({ ...addFormData, price: e.target.value })}
                   className="w-full px-4 py-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-background)] text-sm focus:outline-none focus:border-[var(--color-primary)] transition-colors"
                 />
@@ -431,6 +432,7 @@ export default function AdminProducts() {
                   required
                   placeholder="50"
                   value={addFormData.stock}
+                  min={0}
                   onChange={(e) => setAddFormData({ ...addFormData, stock: e.target.value })}
                   className="w-full px-4 py-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-background)] text-sm focus:outline-none focus:border-[var(--color-primary)] transition-colors"
                 />
@@ -557,6 +559,7 @@ export default function AdminProducts() {
                     step="0.01"
                     required
                     value={editFormData.price}
+                    min={0}
                     onChange={(e) => setEditFormData({ ...editFormData, price: e.target.value })}
                     className="w-full px-3.5 py-2.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-background)] text-sm focus:outline-none focus:border-[var(--color-primary)]"
                   />
@@ -568,6 +571,7 @@ export default function AdminProducts() {
                     type="number"
                     required
                     value={editFormData.stock}
+                    min={0}
                     onChange={(e) => setEditFormData({ ...editFormData, stock: e.target.value })}
                     className="w-full px-3.5 py-2.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-background)] text-sm focus:outline-none focus:border-[var(--color-primary)]"
                   />

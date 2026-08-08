@@ -2,9 +2,7 @@ import ApiClient from "../helpers/ApiClient"; // Uses your configured ApiClient 
 import { toast } from "react-toastify";
 
 const ProductServices = {
-  /**
-   * Fetch all active products
-   */
+ 
   getAllProducts: async () => {
     try {
       const response = await ApiClient.get("/all-products");
@@ -27,9 +25,7 @@ const ProductServices = {
     }
   },
 
-  /**
-   * Fetch product details by ID
-   */
+
   getProductById: async (product_id) => {
     try {
       const response = await ApiClient.get(`/products/${product_id}`);
