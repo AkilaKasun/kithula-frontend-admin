@@ -2,7 +2,7 @@ import axios from "axios";
 import { getAccessToken, clearAccessToken } from "./AuthStatus";
 import { clearUserDetailsInLocalStorage } from "./userDetails";
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const ApiClient = axios.create({
   baseURL: API_BASE_URL,

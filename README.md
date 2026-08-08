@@ -61,7 +61,7 @@ src/
 ├── helpers/             # Authentication & API Utilities
 │   ├── ApiClient.js         # Axios instance with auto-injected Bearer tokens
 │   ├── auth.controller.js   # Sign-in & Sign-out handler logic
-│   └── helpers/             # Cookie & LocalStorage persistence helpers
+│   └── userDetails.js
 ├── pages/
 │   └── admin/               # Primary Admin Pages
 │       ├── AdminDashboard.jsx       # Analytics & KPI overview
