@@ -1,0 +1,42 @@
+@import "tailwindcss";
+
+
+@theme {
+  --color-primary: #1F5E3B;
+  --color-primary-dark: #17492E;
+
+  --color-secondary: #C58B2A;
+  --color-secondary-dark: #A8721F;
+
+  --color-accent: #E6B85C;
+
+  --color-background: #FAF7F2;
+  --color-surface: #FFFFFF;
+
+  --color-text: #2B2B2B;
+  --color-text-secondary: #6B7280;
+
+  --color-border: #E5E7EB;
+
+  --color-success: #2E7D32;
+  --color-danger: #C62828;
+}
+
+@keyframes loadingBar {
+  0% {
+    width: 0%;
+    left: 0;
+  }
+  50% {
+    width: 70%;
+    left: 15%;
+  }
+  100% {
+    width: 100%;
+    left: 0;
+  }
+}
+
+.animate-loading-bar {
+  animation: loadingBar 1.8s infinite ease-in-out;
+}
