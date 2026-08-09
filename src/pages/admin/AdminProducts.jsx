@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
+import { toast } from "react-toastify"; // Added toast import
 import ProductServices from "../../controllers/product.controller";
-import DeleteConfirmModal from "../../components/admin/DeleteConfirmModal"; // Import Delete Modal
+import DeleteConfirmModal from "../../components/admin/DeleteConfirmModal";
 import { 
   FaPlus, 
   FaList, 
@@ -80,7 +81,7 @@ export default function AdminProducts() {
   const handleCreateProduct = async (e) => {
     e.preventDefault();
     if (!addFile) {
-      alert("Please select a product image file.");
+      toast.error("Please select a product image file.");
       return;
     }
 
@@ -88,6 +89,8 @@ export default function AdminProducts() {
       setIsSubmitting(true);
       await ProductServices.createProduct(addFormData, addFile);
       
+      toast.success("Product created successfully!");
+
       // Reset Form & Refresh List
       setAddFormData({ name: "", description: "", price: "", stock: "", category: "" });
       setAddFile(null);
@@ -96,6 +99,7 @@ export default function AdminProducts() {
       fetchProducts();
     } catch (error) {
       console.error("Create product failed:", error);
+      
     } finally {
       setIsSubmitting(false);
     }
@@ -137,11 +141,14 @@ export default function AdminProducts() {
         editFormData,
         editFile
       );
+      
+      toast.success(`Product "${editFormData.name}" updated successfully!`);
       setEditingProduct(null);
       fetchProducts();
     } catch (error) {
       console.error("Update product failed:", error);
-    } finally {
+     
+    }  finally {
       setIsUpdating(false);
     }
   };
@@ -159,11 +166,19 @@ export default function AdminProducts() {
     try {
       setIsDeleting(true);
       await ProductServices.deleteProduct(deletingProduct.product_id);
+      
+      toast.success(`Product "${deletingProduct.name}" deleted successfully!`);
       setDeleteModalOpen(false);
       setDeletingProduct(null);
       fetchProducts();
     } catch (error) {
       console.error("Delete product failed:", error);
+      const errorMessage =
+        error?.response?.data?.message ||
+        error?.response?.data?.error ||
+        error?.message ||
+        "Failed to delete product.";
+      toast.error(errorMessage);
     } finally {
       setIsDeleting(false);
     }

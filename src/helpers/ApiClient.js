@@ -2,7 +2,7 @@ import axios from "axios";
 import { getAccessToken, clearAccessToken } from "./AuthStatus";
 import { clearUserDetailsInLocalStorage } from "./userDetails";
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
 
 const ApiClient = axios.create({
   baseURL: API_BASE_URL,
@@ -11,7 +11,6 @@ const ApiClient = axios.create({
   },
 });
 
-// Request Interceptor: Attach Bearer Token
 ApiClient.interceptors.request.use(
   (config) => {
     const token = getAccessToken();
@@ -23,7 +22,7 @@ ApiClient.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Response Interceptor: Handle 401 Unauthorized
+// Auto-kick expired sessions on 401 response from FastAPI
 ApiClient.interceptors.response.use(
   (response) => response,
   (error) => {

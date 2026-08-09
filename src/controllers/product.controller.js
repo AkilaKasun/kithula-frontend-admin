@@ -16,8 +16,9 @@ const ProductServices = {
     } catch (error) {
       console.error("Error fetching products:", error);
       const errorMessage =
+      error.response?.data?.message ||
         error.response?.data?.error ||
-        error.response?.data?.message ||
+        
         error.message ||
         "Failed to fetch products";
       toast.error(errorMessage);
@@ -37,8 +38,9 @@ const ProductServices = {
     } catch (error) {
       console.error("Error fetching product:", error);
       const errorMessage =
-        error.response?.data?.error ||
         error.response?.data?.message ||
+        error.response?.data?.error ||
+      
         error.message ||
         "Failed to fetch product details";
       toast.error(errorMessage);
@@ -83,6 +85,7 @@ const ProductServices = {
     } catch (error) {
       console.error("Error creating product:", error);
       const errorMessage =
+        error.response?.data?.message ||
         error.response?.data?.error ||
         error.response?.data?.detail ||
         error.message ||
@@ -136,6 +139,7 @@ const ProductServices = {
     } catch (error) {
       console.error("Error updating product:", error);
       const errorMessage =
+        error.response?.data?.message ||
         error.response?.data?.error ||
         error.response?.data?.detail ||
         error.message ||
@@ -163,6 +167,7 @@ const ProductServices = {
     } catch (error) {
       console.error("Error deleting product:", error);
       const errorMessage =
+        error.response?.data?.message ||
         error.response?.data?.error ||
         error.response?.data?.detail ||
         error.message ||

@@ -1,6 +1,9 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 // Layout & Route Protection
 import AdminLayout from "./components/admin/AdminLayout";
 import AdminProtectedRoute from "./components/admin/AdminProtectedRoute";
@@ -13,8 +16,9 @@ import AdminOrders from "./pages/admin/AdminOrders";
 
 function App() {
   return (
-    <Router>
+    <Router><ToastContainer position="top-right" autoClose={3000} />
       <Routes>
+        
         {/* Redirect root URL "/" to "/admin/dashboard" */}
         <Route path="/" element={<Navigate to="/admin/dashboard" replace />} />
 

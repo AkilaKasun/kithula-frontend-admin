@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { FaSignOutAlt, FaChevronDown, FaUserShield, FaBell } from "react-icons/fa";
+import { FaSignOutAlt, FaChevronDown, FaBell } from "react-icons/fa";
 
 // Import Auth Controllers & LocalStorage Helpers
 import { signOut } from "../../controllers/auth.controller";
@@ -8,6 +8,7 @@ import { getUserDetailsInLocalStorage } from "../../helpers/userDetails";
 
 export default function AdminNavbar() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
   const navigate = useNavigate();
   const dropdownRef = useRef(null);
 
@@ -25,10 +26,18 @@ export default function AdminNavbar() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Updated Logout Handler using auth.controller
-  const handleLogout = () => {
-    signOut(); // Clears cookies and localStorage
-    navigate("/admin/login");
+  // Async Logout Handler calling the backend logout route
+  const handleLogout = async () => {
+    try {
+      setIsLoggingOut(true);
+      // Calls ApiClient.post("/logout") then clears cookies & localStorage
+      await signOut(); 
+    } catch (error) {
+      console.error("Error during logout:", error);
+    } finally {
+      setIsLoggingOut(false);
+      navigate("/admin/login");
+    }
   };
 
   return (
@@ -57,13 +66,16 @@ export default function AdminNavbar() {
             {/* Profile Avatar with Active Status Badge */}
             <div className="relative">
               <img
-                src={user?.avatar || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200"}
+                src={
+                  user?.avatar ||
+                  "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200"
+                }
                 alt="Admin Profile"
                 className="w-9 h-9 rounded-full object-cover border border-[var(--color-border)]"
               />
               {/* Active Status Indicator */}
-              <span 
-                className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-500 border-2 border-white rounded-full" 
+              <span
+                className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-500 border-2 border-white rounded-full"
                 title="Active Now"
               ></span>
             </div>
@@ -98,10 +110,11 @@ export default function AdminNavbar() {
 
               <button
                 onClick={handleLogout}
-                className="w-full px-4 py-2.5 text-left text-xs font-bold text-rose-600 hover:bg-rose-50 flex items-center gap-2 transition-colors cursor-pointer"
+                disabled={isLoggingOut}
+                className="w-full px-4 py-2.5 text-left text-xs font-bold text-rose-600 hover:bg-rose-50 flex items-center gap-2 transition-colors cursor-pointer disabled:opacity-50"
               >
                 <FaSignOutAlt size={13} />
-                <span>Logout Session</span>
+                <span>{isLoggingOut ? "Signing out..." : "Logout Session"}</span>
               </button>
             </div>
           )}

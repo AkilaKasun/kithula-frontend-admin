@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { toast } from "react-toastify"; // Added toast import
 import OrderServices from "../../controllers/order.controller";
 import DeleteConfirmModal from "../../components/admin/DeleteConfirmModal";
 import { 
@@ -89,6 +90,12 @@ export default function AdminOrders() {
       }
     } catch (error) {
       console.error("Status update failed:", error);
+      const errorMessage =
+        error?.response?.data?.message ||
+        error?.response?.data?.error ||
+        error?.message ||
+        "Failed to update status.";
+      toast.error(errorMessage);
     } finally {
       setUpdatingStatusId(null);
     }
@@ -101,22 +108,25 @@ export default function AdminOrders() {
   };
 
   // Execute Confirmed Order Deletion
+  // Execute Confirmed Order Deletion
   const handleConfirmDelete = async () => {
     if (!deletingOrder) return;
 
     try {
       setIsDeleting(true);
       await OrderServices.deleteOrder(deletingOrder.order_id);
+      
+      toast.success(`Order #${deletingOrder.order_id} deleted successfully!`);
       setDeleteModalOpen(false);
       setDeletingOrder(null);
       fetchOrders();
     } catch (error) {
       console.error("Delete order failed:", error);
+      // Do NOT call toast.error() here if OrderServices already calls it
     } finally {
       setIsDeleting(false);
     }
   };
-
   // Filtered Orders Logic
   const filteredOrders = orders.filter((order) => {
     const matchesSearch =
@@ -458,7 +468,7 @@ export default function AdminOrders() {
       <DeleteConfirmModal
         isOpen={deleteModalOpen}
         title="Delete Order Record"
-        message="Are you sure you want to delete this order? (Note: Your backend permits deletion only for 'Delivered' or 'Cancelled' orders)."
+        message="Are you sure you want to delete this order? (Note: Deletion is permitted only for 'Delivered' or 'Cancelled' orders)."
         itemName={`Order #${deletingOrder?.order_id} - ${deletingOrder?.customer_name}`}
         isDeleting={isDeleting}
         onConfirm={handleConfirmDelete}

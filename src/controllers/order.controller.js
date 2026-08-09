@@ -9,7 +9,7 @@ const OrderServices = {
   async createOrder(orderData) {
     try {
       const response = await ApiClient.post("/create-order", orderData);
-      
+
       if (response.data?.error) {
         toast.error(response.data.error);
         throw new Error(response.data.error);
@@ -49,8 +49,8 @@ const OrderServices = {
     } catch (error) {
       console.error("Error fetching all orders:", error);
       const errorMessage =
-        error.response?.data?.error ||
         error.response?.data?.message ||
+        error.response?.data?.error ||
         error.message ||
         "Failed to fetch orders";
       toast.error(errorMessage);
@@ -75,8 +75,9 @@ const OrderServices = {
     } catch (error) {
       console.error(`Error fetching order #${orderId}:`, error);
       const errorMessage =
-        error.response?.data?.error ||
         error.response?.data?.message ||
+        error.response?.data?.error ||
+
         error.message ||
         "Failed to fetch order details";
       toast.error(errorMessage);
@@ -104,8 +105,9 @@ const OrderServices = {
     } catch (error) {
       console.error(`Error updating order #${orderId} status:`, error);
       const errorMessage =
-        error.response?.data?.error ||
         error.response?.data?.message ||
+        error.response?.data?.error ||
+
         error.message ||
         "Failed to update order status";
       toast.error(errorMessage);
@@ -131,8 +133,9 @@ const OrderServices = {
     } catch (error) {
       console.error(`Error deleting order #${orderId}:`, error);
       const errorMessage =
-        error.response?.data?.error ||
         error.response?.data?.message ||
+        error.response?.data?.error ||
+
         error.message ||
         "Failed to delete order";
       toast.error(errorMessage);
