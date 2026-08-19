@@ -1,6 +1,9 @@
 import axios from "axios";
-import { getAccessToken, clearAccessToken } from "./AuthStatus";
-import { clearUserDetailsInLocalStorage } from "./userDetails";
+import { 
+  getAccessToken, 
+  isTokenValid, 
+  logoutAndRedirect 
+} from "./AuthStatus";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
 
@@ -11,10 +14,15 @@ const ApiClient = axios.create({
   },
 });
 
+// Request Interceptor: Checks token validity BEFORE dispatching
 ApiClient.interceptors.request.use(
   (config) => {
     const token = getAccessToken();
     if (token) {
+      if (!isTokenValid(token)) {
+        logoutAndRedirect();
+        return Promise.reject(new Error("Session expired. Redirecting to login."));
+      }
       config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
@@ -22,14 +30,12 @@ ApiClient.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Auto-kick expired sessions on 401 response from FastAPI
+// Response Interceptor: Catches 401 from FastAPI
 ApiClient.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response && error.response.status === 401) {
-      clearAccessToken();
-      clearUserDetailsInLocalStorage();
-      window.location.href = "/admin/login";
+      logoutAndRedirect();
     }
     return Promise.reject(error);
   }

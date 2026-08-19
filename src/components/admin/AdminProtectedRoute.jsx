@@ -1,16 +1,15 @@
 import React from "react";
 import { Navigate, useLocation } from "react-router-dom";
-import { getAccessToken } from "../../helpers/AuthStatus";
+import { isAdminAuthenticated } from "../../helpers/AuthStatus";
 
 export default function AdminProtectedRoute({ children }) {
   const location = useLocation();
-  const token = getAccessToken();
 
-  // Pure synchronous check: If no token exists, redirect to login page
-  if (!token) {
+  // Checks both: (1) Token existence and (2) Expiration against backend JWT `exp`
+  if (!isAdminAuthenticated()) {
     return <Navigate to="/admin/login" state={{ from: location }} replace />;
   }
 
-  // If token exists, render children directly WITHOUT setting state
+  // If token is present and NOT expired, render children
   return children;
 }
